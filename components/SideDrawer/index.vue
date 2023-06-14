@@ -20,39 +20,9 @@ const { currCandidate } = useCandidate();
 
 
 onMounted(() => {
-  // setup available elements
-  const $drawerElement = document.querySelector('#drawer-right');
-  const $closeButton = document.querySelector('#close-button');
-  // set modal options
-
-  const drawerOptions = {
-    placement: 'right',
-    backdrop: true,
-    bodyScrolling: false,
-    edge: false,
-    edgeOffset: '',
-    backdropClasses:
-      'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
-  };
-
-  // create a new modal instance
-  if ($drawerElement) {
-    const drawer = new Drawer($drawerElement, drawerOptions);
-    // $buttonElement.forEach((el) => {
-    //   el.addEventListener('click', () => drawer.toggle());
-    // });
-    useState('drawer', () => drawer)
-  }
   initTabs()
 });
-// onUpdated(() => {
-//   const $buttonElement = document.querySelectorAll('#button-open');
-//   // create a new modal instance
-//   console.log($buttonElement)
-//   $buttonElement.forEach((el) => {
-//     el.addEventListener('click', () => drawer.toggle());
-//   });
-// })
+
 </script>
 
 <template>

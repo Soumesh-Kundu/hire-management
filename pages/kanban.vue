@@ -41,12 +41,10 @@
                 <draggable :list="candidates" group="kanban" itemKey="grouped"
                     @change="changeGroup(candidates, $event, 'stages')" class="flex flex-col gap-4">
                     <template #item="{ element: data, index }">
-                        <CandCardBody :content="data" class="cursor-grab" 
-                        @click="() => { 
-                            detailsHandler({ ...data }) 
-                            drawer.toggle()
-                            console.log(drawer)
-                            }" />
+                        <CandCardBody :content="data" class="cursor-grab" @click="() => {
+                            detailsHandler({ ...data })
+                            drawer.show()
+                        }" />
                     </template>
                 </draggable>
             </div>
@@ -94,6 +92,29 @@ const { currCandidate, getCurrentCandInfo } = useCandidate()
 const detailsHandler = (rowData) => {
     getCurrentCandInfo(rowData);
 };
+// const drawer = useState('drawer')
 
-const drawer=useState('drawer')
+const drawer=ref()
+onMounted(()=>{
+    const $drawerElement = document.querySelector('#drawer-right');
+  // set modal options
+
+  const drawerOptions = {
+    placement: 'right',
+    backdrop: true,
+    bodyScrolling: false,
+    edge: false,
+    edgeOffset: '',
+    backdropClasses:
+      'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
+  };
+
+  // create a new modal instance
+  if ($drawerElement) {
+    drawer.value = new Drawer($drawerElement, drawerOptions);
+  }
+})
+onUnmounted(()=>{
+  drawer.value.hide()
+})
 </script>

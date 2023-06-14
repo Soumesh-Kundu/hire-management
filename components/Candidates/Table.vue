@@ -1,7 +1,6 @@
 <script setup>
 import { ChevronUpDownIcon } from '@heroicons/vue/24/solid';
 import draggable from 'vuedraggable';
-import { Drawer } from 'flowbite';
 import useGroup from '~/composables/grouping';
 
 const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap } = defineProps([
@@ -70,36 +69,23 @@ function changeGroup(list, evt, queryString) {
     currentElement[lastKey] = nextElement[lastKey];
   }
 }
+
 </script>
 <template>
   <SideDrawer />
   <div class="relative overflow-x-auto rounded-md">
-    <table
-      class="w-full text-sm text-left text-gray-500 border-collapse dark:text-gray-400"
-    >
-      <thead
-        v-if="!grouped.active"
-        class="text-sm text-gray-800 bg-white shadow-sm"
-      >
+    <table class="w-full text-sm text-left text-gray-500 border-collapse dark:text-gray-400">
+      <thead v-if="!grouped.active" class="text-sm text-gray-800 bg-white shadow-sm">
         <draggable v-model="draggable_local_headers" item-key="id" tag="tr">
           <template #header>
             <th scope="col" class="p-4 rounded-l-md">
               <div class="flex items-center">
-                <input
-                  id="checkbox-all-search"
-                  type="checkbox"
-                  class="w-5 h-5 text-green-400 bg-gray-100 border-gray-300 focus:ring-white focus:ring-0"
-                />
-                <label for="checkbox-all-search" class="sr-only"
-                  >checkbox</label
-                >
+                <input id="checkbox-all-search" type="checkbox"
+                  class="w-5 h-5 text-green-400 bg-gray-100 border-gray-300 focus:ring-white focus:ring-0" />
+                <label for="checkbox-all-search" class="sr-only">checkbox</label>
               </div>
             </th>
-            <th
-              scope="col"
-              v-for="(header, index) in non_draggable_local_headers"
-              class="px-3 py-3"
-            >
+            <th scope="col" v-for="(header, index) in non_draggable_local_headers" class="px-3 py-3">
               <div class="flex items-center gap-1">
                 <span>{{ header.displayName }}</span>
                 <ChevronUpDownIcon class="w-4 h-4" />
@@ -107,15 +93,11 @@ function changeGroup(list, evt, queryString) {
             </th>
           </template>
           <template #item="{ element: header }">
-            <th
-              v-if="
-                tableRowMap.get(header.name).visilibility === undefined
-                  ? true
-                  : tableTdVisible[tableRowMap.get(header.name).visilibility]
-              "
-              scope="col"
-              class="px-3 py-3 cursor-pointer"
-            >
+            <th v-if="
+              tableRowMap.get(header.name).visilibility === undefined
+                ? true
+                : tableTdVisible[tableRowMap.get(header.name).visilibility]
+            " scope="col" class="px-3 py-3 cursor-pointer">
               <div class="flex items-center gap-1">
                 <span>{{ header.displayName }}</span>
                 <ChevronUpDownIcon class="w-4 h-4" />
@@ -131,30 +113,16 @@ function changeGroup(list, evt, queryString) {
       </thead>
       <thead v-else class="text-sm text-gray-800 bg-white shadow-sm">
         <tr>
-          <draggable
-            v-model="draggable_local_headers"
-            item-key="id"
-            tag="tr"
-            class="flex items-center gap-8"
-          >
+          <draggable v-model="draggable_local_headers" item-key="id" tag="tr" class="flex items-center gap-8">
             <template #header>
               <th scope="col" class="p-4 rounded-l-md">
                 <div class="flex items-center">
-                  <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    class="w-5 h-5 text-green-400 bg-gray-100 border-gray-300 focus:ring-white focus:ring-0"
-                  />
-                  <label for="checkbox-all-search" class="sr-only"
-                    >checkbox</label
-                  >
+                  <input id="checkbox-all-search" type="checkbox"
+                    class="w-5 h-5 text-green-400 bg-gray-100 border-gray-300 focus:ring-white focus:ring-0" />
+                  <label for="checkbox-all-search" class="sr-only">checkbox</label>
                 </div>
               </th>
-              <th
-                scope="col"
-                v-for="(header, index) in non_draggable_local_headers"
-                class="px-3 py-3"
-              >
+              <th scope="col" v-for="(header, index) in non_draggable_local_headers" class="px-3 py-3">
                 <div class="flex items-center gap-1">
                   <span>{{ header.displayName }}</span>
                   <ChevronUpDownIcon class="w-4 h-4" />
@@ -162,15 +130,11 @@ function changeGroup(list, evt, queryString) {
               </th>
             </template>
             <template #item="{ element: header }">
-              <th
-                v-if="
-                  tableRowMap.get(header.name).visilibility === undefined
-                    ? true
-                    : tableTdVisible[tableRowMap.get(header.name).visilibility]
-                "
-                scope="col"
-                class="px-3 py-3"
-              >
+              <th v-if="
+                tableRowMap.get(header.name).visilibility === undefined
+                  ? true
+                  : tableTdVisible[tableRowMap.get(header.name).visilibility]
+              " scope="col" class="px-3 py-3">
                 <div class="flex items-center gap-1">
                   <span>{{ header.displayName }}</span>
                   <ChevronUpDownIcon class="w-4 h-4" />
@@ -186,16 +150,8 @@ function changeGroup(list, evt, queryString) {
         </tr>
       </thead>
       <tbody v-if="!grouped.active" class="candidate-tbody">
-        <tr
-          class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm"
-          v-for="(data, index) in TABLE_DATA"
-        >
-          <CandidatesTableRow
-            :key="data.id"
-            :data="data"
-            :tableRowMap="tableRowMap"
-            :headers="local_headers"
-          />
+        <tr class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm" v-for="(data, index) in TABLE_DATA">
+          <CandidatesTableRow :key="data.id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
         </tr>
       </tbody>
       <tbody v-else>
@@ -208,25 +164,13 @@ function changeGroup(list, evt, queryString) {
               </div>
             </td>
           </tr>
-          <draggable
-            :list="candidates"
-            :group="{ name: 'candidates', pull: true, put: true }"
-            itemKey="grouped"
-            tag="tr"
+          <draggable :list="candidates" :group="{ name: 'candidates', pull: true, put: true }" itemKey="grouped" tag="tr"
             @change="
               changeGroup(candidates, $event, groupMap.get(grouped.groupedBy))
-            "
-          >
+            ">
             <template #item="{ element: data, index }">
-              <tr
-                class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm"
-              >
-                <CandidatesTableRow
-                  :key="data.id"
-                  :data="data"
-                  :tableRowMap="tableRowMap"
-                  :headers="local_headers"
-                />
+              <tr class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm">
+                <CandidatesTableRow :key="data.id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
               </tr>
             </template>
           </draggable>

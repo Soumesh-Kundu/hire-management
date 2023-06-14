@@ -15,12 +15,35 @@ import {
 
 const { DUMMY_DATA } = useTableData()
 const { getCurrentCandInfo } = useCandidate()
-const drawer=useState('drawer')
+// const drawer=useState('drawer')
 
+const drawer=ref()
+onMounted(()=>{
+    const $drawerElement = document.querySelector('#drawer-right');
+  // set modal options
+
+  const drawerOptions = {
+    placement: 'right',
+    backdrop: true,
+    bodyScrolling: false,
+    edge: false,
+    edgeOffset: '',
+    backdropClasses:
+      'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
+  };
+
+  // create a new modal instance
+  if ($drawerElement) {
+    drawer.value = new Drawer($drawerElement, drawerOptions);
+  }
+})
+onUnmounted(()=>{
+  drawer.value.hide()
+})
 
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
-  drawer.value.toggle()
+  drawer.value.show()
 };
 
 
@@ -57,6 +80,7 @@ const tableRowMap = new Map([
   ['Date', { property: 'appliedDate', visibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
   ['Owner', { property: 'owner', visibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
 ])
+
 </script>
 
 <template>
