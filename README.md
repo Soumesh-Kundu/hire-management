@@ -1,11 +1,3 @@
-<<<<<<< README.md
-# Nuxt 3 Minimal Starter
-
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-# Table-UI
-
-
-
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
