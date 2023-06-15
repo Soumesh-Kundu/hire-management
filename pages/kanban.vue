@@ -92,7 +92,6 @@ const { currCandidate, getCurrentCandInfo } = useCandidate()
 const detailsHandler = (rowData) => {
     getCurrentCandInfo(rowData);
 };
-// const drawer = useState('drawer')
 
 const drawer=ref()
 onMounted(()=>{
