@@ -13,45 +13,14 @@ import {
   PlusIcon,
 } from '@heroicons/vue/24/solid';
 
-import { Drawer } from 'flowbite';
-import useGroup from '~/composables/grouping';
-
-const { DUMMY_DATA,resetFilterFields } = useTableData()
+const { DUMMY_DATA } = useTableData()
 const { getCurrentCandInfo } = useCandidate()
-const {setGroup}=useGroup()
+const drawer=useState('drawer')
 
-const drawer=ref()
-onMounted(()=>{
-    const $drawerElement = document.querySelector('#drawer-right');
-  // set modal options
-
-  const drawerOptions = {
-    placement: 'right',
-    backdrop: true,
-    bodyScrolling: false,
-    edge: false,
-    edgeOffset: '',
-    backdropClasses:
-      'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
-  };
-
-  // create a new modal instance
-  if ($drawerElement) {
-    drawer.value = new Drawer($drawerElement, drawerOptions);
-  }
-})
-onUnmounted(()=>{
-  drawer.value.hide()
-  resetFilterFields()
-  setGroup({
-    active:false,
-    groupedBy:null
-  })
-})
 
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
-  drawer.value.show()
+  drawer.value.toggle()
 };
 
 
@@ -88,7 +57,6 @@ const tableRowMap = new Map([
   ['Date', { property: 'appliedDate', visibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
   ['Owner', { property: 'owner', visibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
 ])
-
 </script>
 
 <template>
