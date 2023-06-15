@@ -2,6 +2,12 @@
 import { StarIcon, ChevronDownIcon } from '@heroicons/vue/24/solid';
 
 const { content } = defineProps(['content']);
+const colorMap = new Map([
+  ['Screening', 'green-800'],
+  ['New Applied', 'emerald-400'],
+  ['Design Challange', 'orange-400'],
+  ['Interview', 'violet-400']
+])
 </script>
 
 <template>
@@ -39,9 +45,7 @@ const { content } = defineProps(['content']);
 
     <div class="px-4 py-2 pl-3">
       <div class="flex items-center justify-between">
-        <div
-          :class="`border ${content.stages.color} text-white px-2 py-[.2rem] rounded-md text-sm`"
-        >
+        <div :class="`border bg-${colorMap.get(content.stages.state)} text-white px-2 py-[.2rem] rounded-md text-sm`">
           {{ content.stages.state }}
         </div>
       </div>
