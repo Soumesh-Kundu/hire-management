@@ -39,7 +39,11 @@
         id="tooltipBtn"
         class="relative inline-flex items-center cursor-pointer"
       >
-        <input type="checkbox" value="" class="sr-only peer" />
+        <input
+          type="checkbox"
+          v-model="isKanbanNotVisible"
+          class="sr-only peer"
+        />
         <div
           class="w-[2.95rem] h-[1.6rem] bg-gray-300 peer-focus:outline-none peer rounded-sm peer-checked:after:translate-x-full peer-checked:after:border-none after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:border after:border-gray-300 after:h-5 after:w-5 after:rounded-sm after:transition-all peer-checked:bg-green-600"
         ></div>
@@ -58,74 +62,20 @@
     <section
       class="grid grid-cols-4 gap-8 mx-6 mt-8 max-lg:grid-cols-2 max-lg:gap-y-12 max-md:grid-cols-1 max-md:mt-8"
     >
-      <div v-for="(candidates, group) in byGrouped" class="flex flex-col gap-4">
-        <CandCardHead
-          :border="`${candidates[0].stages.border}`"
-          :title="group"
-          :count="candidates.length"
-        />
-        <draggable
-          :list="candidates"
-          group="kanban"
-          itemKey="grouped"
-          @change="changeGroup(candidates, $event, 'stages')"
-          class="flex flex-col gap-4"
-        >
-          <template #item="{ element: data, index }">
-            <CandCardBody
-              :content="data"
-              class="cursor-grab"
-              @click="
-                () => {
-                  detailsHandler({ ...data });
-                  drawer.toggle();
-                  console.log(drawer);
-                }
-              "
-            />
-          </template>
-        </draggable>
-      </div>
+      <Candidates2Kanban
+        v-if="!isKanbanNotVisible"
+        :data="candidateData"
+        :detailsHandler="detailsHandler"
+      />
+
+      <Candidates2Gallery v-else />
     </section>
   </main>
 </template>
 
 <script setup>
-import draggable from 'vuedraggable';
 const { DUMMY_DATA } = useTableData();
 const { candidateData } = useCandidateData();
-
-const byGrouped = computed(() => {
-  return arrangeByStages(candidateData.value, 'stages.state');
-});
-
-function arrangeByStages(data, queryString) {
-  const keys = queryString.split('.');
-  return data?.reduce((acc, user) => {
-    let fieldValue = user;
-    for (const key of keys) {
-      if (fieldValue && fieldValue.hasOwnProperty(key)) {
-        fieldValue = fieldValue[key];
-      } else {
-        fieldValue = undefined;
-        break;
-      }
-    }
-    (acc[fieldValue] ||= []).push(user);
-    return acc;
-  }, {});
-}
-
-function changeGroup(list, evt, key) {
-  if (evt.added !== undefined) {
-    let currentElement = list[evt.added.newIndex];
-    let nextElement = list[(evt.added.newIndex + 1) % list.length];
-    currentElement[key] = {
-      ...nextElement[key],
-      value: currentElement[key].value,
-    };
-  }
-}
 
 const { currCandidate, getCurrentCandInfo } = useCandidate();
 const detailsHandler = (rowData) => {
@@ -133,6 +83,8 @@ const detailsHandler = (rowData) => {
 };
 
 const drawer = useState('drawer');
+
+const isKanbanNotVisible = ref(false);
 
 onMounted(() => {
   const $targetEl = document.getElementById('tooltipContent');
