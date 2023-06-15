@@ -25,9 +25,7 @@
         </button>
       </div>
     </header>
-    <div
-      class="flex items-center justify-between mx-6 mt-8 max-md:flex-col max-md:items-start max-md:gap-4"
-    >
+    <div class="flex items-center justify-between mx-6 mt-8">
       <h3 class="text-base font-medium capitalize">
         total candidates:
         <span class="p-1 ml-1 font-semibold text-white bg-green-700 rounded-sm">
@@ -67,24 +65,23 @@
         :data="candidateData"
         :detailsHandler="detailsHandler"
       />
-
-      <Candidates2Gallery v-else />
+      <Candidates2Gallery v-else :data="candidateData" />
     </section>
   </main>
 </template>
 
 <script setup>
-import  {Drawer,Tooltip} from 'flowbite'
+import { Drawer, Tooltip } from 'flowbite';
 const { DUMMY_DATA } = useTableData();
 const { candidateData } = useCandidateData();
 
 const { currCandidate, getCurrentCandInfo } = useCandidate();
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
-  drawer.value.show()
+  drawer.value.show();
 };
 
-const drawer = ref()
+const drawer = ref();
 
 const isKanbanNotVisible = ref(false);
 
@@ -119,7 +116,7 @@ onMounted(() => {
 
   const tooltip = new Tooltip($targetEl, $triggerEl, options);
 });
-onUnmounted(()=>{
-  drawer.value.hide()
-})
+onUnmounted(() => {
+  drawer.value.hide();
+});
 </script>

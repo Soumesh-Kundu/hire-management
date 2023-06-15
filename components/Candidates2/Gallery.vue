@@ -3,5 +3,5 @@ const { data } = defineProps(['data']);
 </script>
 
 <template>
-  <div>gallary view</div>
+  <Candidates2GalleryItem v-for="cand in data" :content="cand" />
 </template>
