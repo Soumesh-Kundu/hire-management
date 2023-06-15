@@ -13,6 +13,8 @@ import {
   PlusIcon,
 } from '@heroicons/vue/24/solid';
 
+import { Drawer } from 'flowbite';
+
 const { DUMMY_DATA } = useTableData()
 const { getCurrentCandInfo } = useCandidate()
 // const drawer=useState('drawer')
