@@ -255,6 +255,7 @@ export const useTableData = () => {
   };
 
   return {
+    TABLE_DUMMY_DATA,
     DUMMY_DATA,
     sortByText,
     sortByNumOrDate,

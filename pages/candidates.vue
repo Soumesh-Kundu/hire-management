@@ -14,10 +14,11 @@ import {
 } from '@heroicons/vue/24/solid';
 
 import { Drawer } from 'flowbite';
+import useGroup from '~/composables/grouping';
 
-const { DUMMY_DATA } = useTableData()
+const { DUMMY_DATA,resetFilterFields } = useTableData()
 const { getCurrentCandInfo } = useCandidate()
-// const drawer=useState('drawer')
+const {setGroup}=useGroup()
 
 const drawer=ref()
 onMounted(()=>{
@@ -41,6 +42,11 @@ onMounted(()=>{
 })
 onUnmounted(()=>{
   drawer.value.hide()
+  resetFilterFields()
+  setGroup({
+    active:false,
+    groupedBy:null
+  })
 })
 
 const detailsHandler = (rowData) => {

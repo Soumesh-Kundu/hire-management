@@ -1,18 +1,28 @@
 <script setup>
 import { StarIcon } from '@heroicons/vue/24/solid';
 const { content } = defineProps(['content']);
+const colorMap = new Map([
+  ['Screening', 'green-800'],
+  ['New Applied', 'emerald-400'],
+  ['Design Challange', 'orange-400'],
+  ['Interview', 'violet-400']
+])
 </script>
 
 <template>
-  <div
-    class="w-full max-w-sm bg-white border border-gray-200 rounded-md shadow"
-  >
-    <div class="flex flex-col items-center pb-8 pt-4">
-      <img
-        class="w-20 h-20 mb-2 rounded-full shadow-lg"
-        :src="content.candidate.image"
-        :alt="content.candidate.name"
-      />
+  <div class="w-full max-w-sm bg-white border border-gray-200 rounded-md shadow-md">
+    <div class="flex flex-col items-center pt-4 pb-8">
+      <div class="relative">
+        <img class="w-20 h-20 mb-2 rounded-full shadow-lg" :src="content.candidate.image" :alt="content.candidate.name" />
+
+        <div
+          class="absolute left-0 right-0 flex items-center justify-center gap-1 px-2 bg-white rounded-full shadow-md bottom-1">
+          <StarIcon v-if="content.rating > 0" class="w-3 h-3 text-yellow-300" />
+          <StarIcon v-else class="w-3 h-3 text-gray-300" />
+          <span :class="`text-sm ${content.rating > 0 ? 'text-black' : 'text-gray-600'
+            }`">{{ content.rating }}.0</span>
+        </div>
+      </div>
       <h5 class="mb-1 text-lg font-medium text-gray-900 dark:text-white">
         {{ content.candidate.name }}
       </h5>
@@ -23,23 +33,8 @@ const { content } = defineProps(['content']);
 
     <div class="px-4 py-2 pl-3">
       <div class="flex items-center justify-between">
-        <div
-          :class="`border ${content.stages.color} text-white px-2 py-[.2rem] rounded-md text-sm`"
-        >
+        <div :class="`border bg-${colorMap.get(content.stages.state)} text-white px-2 py-[.2rem] rounded-md text-sm`">
           {{ content.stages.state }}
-        </div>
-
-        <div class="flex justify-between">
-          <div v-if="content.rating <= 5" class="flex">
-            <StarIcon
-              v-for="n in content.rating"
-              class="w-5 h-5 text-yellow-400"
-            />
-            <StarIcon
-              v-for="n in 5 - content.rating"
-              class="w-5 h-5 text-gray-300"
-            />
-          </div>
         </div>
       </div>
     </div>

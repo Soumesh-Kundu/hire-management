@@ -28,10 +28,12 @@ function changeGroup(list, evt, key) {
   if (evt.added !== undefined) {
     let currentElement = list[evt.added.newIndex];
     let nextElement = list[(evt.added.newIndex + 1) % list.length];
+    console.log(currentElement.stages.state)
     currentElement[key] = {
       ...nextElement[key],
       value: currentElement[key].value,
     };
+    console.log(currentElement.stages.state)
   }
 }
 </script>
@@ -45,7 +47,7 @@ function changeGroup(list, evt, key) {
     />
     <draggable
       :list="candidates"
-      group="kanban"
+      :group="{name:'Kanban',put:true,pull:true}"
       itemKey="grouped"
       @change="changeGroup(candidates, $event, 'stages')"
       class="flex flex-col gap-4"
@@ -57,8 +59,6 @@ function changeGroup(list, evt, key) {
           @click="
             () => {
               detailsHandler({ ...data });
-              drawer.toggle();
-              console.log(drawer);
             }
           "
         />
