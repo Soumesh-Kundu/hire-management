@@ -2,61 +2,75 @@
 definePageMeta({
     layout: 'signup'
 })
+const {app,mongo}=useRealm()
+const userCollection=mongo?.db('')?.collection('users')
+const freshForm={
+    email:"",
+    fullname:"",
+    companyName:"",
+    password:""
+}
+const data=ref({...freshForm})
+
+async function registerUser(){
+    await app.emailPasswordAuth({email:data.value.email,password:data.value.password})
+    await userCollection.insertOne()
+}
 </script>
 
 <template>
     <NuxtLayout name="signup">
         <div class="grid grid-cols-12">
             <section class="col-span-12 md:col-span-6 text-center bg-[#F2E6DD] md:h-screen hidden md:block">
-                <h2 class="text-4xl font-bold text-gray-900 pt-10">Try Qualyval free for 15 Days</h2>
-                <p class="text-lg text-gray-600 w-8/12 mx-auto mt-3 mb-6">Get a chance to explore the product to its fullest
+                <h2 class="pt-10 text-4xl font-bold text-gray-900">Try Qualyval free for 15 Days</h2>
+                <p class="w-8/12 mx-auto mt-3 mb-6 text-lg text-gray-600">Get a chance to explore the product to its fullest
                     before choosing your ideal plan.</p>
                 <div class="flex justify-center">
                     <img class="h-[500px]" src="https://i.ibb.co/gWjdkYb/1ecb6705993dc024056b9d3b9a206f1a.webp" alt="">
                 </div>
             </section>
-            <section class="col-span-12 md:col-span-6 text-center bg-gray-50">
-                <h2 class="text-4xl font-bold text-gray-900 pt-10">Sign Up to your account</h2>
-                <p class="text-lg text-gray-600 w-8/12 mx-auto mt-3 mb-3">Get a chance to explore the product to its fullest
+            <section class="col-span-12 text-center md:col-span-6 bg-gray-50">
+                <h2 class="pt-10 text-4xl font-bold text-gray-900">Sign Up to your account</h2>
+                <p class="w-8/12 mx-auto mt-3 mb-3 text-lg text-gray-600">Get a chance to explore the product to its fullest
                     before choosing your ideal plan.</p>
-                <p class="text-lg text-gray-600 mb-3">Almady have an account? <span
+                <p class="mb-3 text-lg text-gray-600">Almady have an account? <span
                         class="text-blue-600 cursor-pointer">Sign
                         In</span></p>
-                <form action="" class="w-11/12 md:w-8/12 mx-auto text-left">
+                <form  class="w-11/12 mx-auto text-left md:w-8/12" @submit.prevent="registerUser">
                     <div class="mb-3">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full
                             Name</label>
-                        <input type="text" name="name" id="name"
+                        <input type="text" name="name" id="name" v-model="data.fullname"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="input your full name" required="">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business
                             Email</label>
-                        <input type="text" name="email" id="email"
+                        <input type="email" name="email" id="email" v-model="data.email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="input your business email" required="">
                     </div>
                     <div class="mb-3">
                         <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company
                             Name</label>
-                        <input type="text" name="company" id="company"
+                        <input type="text" name="company" id="company" v-model="data.companyName"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="input your company name" required="">
                     </div>
                     <div class="mb-5">
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                        <input type="password" name="password" id="password"
+                        <input type="password" name="password" id="password" v-model="data.password"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="password" required="">
                     </div>
                     <div class="">
-                        <button class="w-full py-2 bg-yellow-400 rounded-lg font-bold text-white hover:bg-yellow-500">SIGN
+                        <button class="w-full py-2 font-bold text-white bg-yellow-400 rounded-lg hover:bg-yellow-500">SIGN
                             UP</button>
                     </div>
                 </form>
-                <div class="inline-flex items-center justify-center w-full relative">
+                <div class="relative inline-flex items-center justify-center w-full">
                     <hr class="w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
                     <span
                         class="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">Or
