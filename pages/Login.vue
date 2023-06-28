@@ -6,7 +6,6 @@ const { Realm, app } = useRealm();
 
 const email = ref('');
 const password = ref('');
-
 const registerUser = async () => {
   try {
     const credentials = Realm.Credentials.emailPassword(
@@ -16,7 +15,6 @@ const registerUser = async () => {
     const user = await app.logIn(credentials);
 
     if (user) navigateTo('/candidates');
-    console.log(user);
   } catch (err) {
     console.log(err);
   }

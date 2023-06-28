@@ -12,9 +12,18 @@ import {
   ChartPieIcon,
   Cog6ToothIcon,
 } from '@heroicons/vue/24/solid';
-
 import { Drawer } from 'flowbite';
 
+const {app}=useRealm()
+
+async function logout(){
+  try {
+    await app.currentUser.logOut()
+    navigateTo('/login')
+  } catch (error) {
+    
+  }
+}
 onMounted(() => {
   // setup available elements
   const $buttonElement = document.querySelector('#button');
@@ -225,10 +234,11 @@ const rootFunction = () => {
         </li>
 
         <li>
-          <NuxtLink
+          <button
             id="closeButton"
             class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700"
-            to="/signUp"
+            @click="logout"
+            type="button"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -246,7 +256,7 @@ const rootFunction = () => {
             </svg>
 
             <span class="ml-3">Sign Up</span>
-          </NuxtLink>
+          </button>
         </li>
       </ul>
     </div>

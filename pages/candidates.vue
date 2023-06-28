@@ -5,6 +5,8 @@ import {
   ArrowDownTrayIcon,
   PrinterIcon,
   ChevronDownIcon,
+  PencilIcon,
+  TrashIcon
 } from '@heroicons/vue/24/outline';
 
 import {
@@ -19,8 +21,20 @@ import useGroup from '~/composables/grouping';
 const { DUMMY_DATA,resetFilterFields } = useTableData()
 const { getCurrentCandInfo } = useCandidate()
 const {setGroup}=useGroup()
-
 const drawer=ref()
+const editingIndex=ref(null)
+function setEditingIndex(index){
+  if(editingIndex.value!==index){
+    console.log(editingIndex.value)
+    editingIndex.value=index
+    console.log("different Index",editingIndex.value)
+  }
+  else{
+    editingIndex.value=null
+    console.log("smae Index" ,editingIndex.value)
+  }
+  return editingIndex.value
+}
 onMounted(()=>{
     const $drawerElement = document.querySelector('#drawer-right');
   // set modal options
@@ -48,6 +62,7 @@ onUnmounted(()=>{
     groupedBy:null
   })
 })
+
 
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
@@ -114,32 +129,36 @@ const tableRowMap = new Map([
 
         <div class="flex items-center">
 
-          <div class="pr-5 mr-5 border-r border-gray-400 max-md:border-none max-md:mr-0">
-            <button
-              class="p-2 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-400 hover:text-white">
-              <EllipsisVerticalIcon class="w-6 h-6 font-semibold" />
-            </button>
+          <div v-if="editingIndex!==null" class="flex items-center gap-3 pr-3 mr-3 border-r border-gray-400 max-md:border-none max-md:mr-0">
+              <button
+                class="p-2 text-blue-500 bg-white border border-blue-500 rounded-md hover:bg-gray-100">
+                <PencilIcon class="w-6 h-6 font-semibold" />
+              </button>
+              <button
+                class="p-2 text-red-500 bg-white border border-red-500 rounded-md hover:bg-gray-100">
+                <TrashIcon class="w-6 h-6 font-semibold" />
+              </button>
           </div>
 
           <button
-            class="p-2 mr-5 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-500 hover:text-white">
+            class="p-2 mr-3 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-500 hover:text-white">
             <ArrowDownTrayIcon class="w-6 h-6 font-semibold" />
           </button>
 
           <button
-            class="p-2 mr-5 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-500 hover:text-white max-md:hidden">
+            class="p-2 mr-3 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-500 hover:text-white max-md:hidden">
             <PrinterIcon class="w-6 h-6 font-semibold" />
           </button>
 
-          <button class="flex items-center gap-1 border-2 rounded-md border-black px-5 py-[.54rem] max-md:p-2">
+          <NuxtLink to="/add-candidate" class="flex items-center gap-1 border-2 rounded-md border-black px-5 py-[.54rem] max-md:p-2" >
             <PlusIcon class="w-4 h-4 font-semibold max-md:w-5 max-md:h-5" />
             <span class="text-sm font-medium max-md:hidden">Add Candidate</span>
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </header>
 
-    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap" :tableRowMap="tableRowMap" :groupMap="groupMap" />
+    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :setEditingIndex="setEditingIndex" :queryMap="queryMap" :tableRowMap="tableRowMap" :groupMap="groupMap" :editingIndex="editingIndex" />
 
     <footer class="flex items-center justify-between py-3 mt-auto mb-2">
       <div class="flex items-center gap-4">

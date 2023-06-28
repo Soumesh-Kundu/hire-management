@@ -3,12 +3,14 @@ import { ChevronUpDownIcon } from '@heroicons/vue/24/solid';
 import draggable from 'vuedraggable';
 import useGroup from '~/composables/grouping';
 
-const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap } = defineProps([
+const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap,setEditingIndex,editingIndex } = defineProps([
   'TABLE_DATA',
   'headers',
   'queryMap',
   'tableRowMap',
   'groupMap',
+  'setEditingIndex',
+  'editingIndex'
 ]);
 
 const { grouped } = useGroup();
@@ -151,7 +153,7 @@ function changeGroup(list, evt, queryString) {
       </thead>
       <tbody v-if="!grouped.active" class="candidate-tbody">
         <tr class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm" v-for="(data, index) in TABLE_DATA">
-          <CandidatesTableRow :key="data.id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
+          <CandidatesTableRow @check="setEditingIndex(index)" :editingIndex="editingIndex" :key="data.id" :data="{...data,index:index}" :tableRowMap="tableRowMap" :headers="local_headers" />
         </tr>
       </tbody>
       <tbody v-else>
@@ -170,7 +172,7 @@ function changeGroup(list, evt, queryString) {
             ">
             <template #item="{ element: data, index }">
               <tr class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm">
-                <CandidatesTableRow :key="data.id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
+                <CandidatesTableRow @check="setEditingIndex(index)" :key="data.id" :editingIndex="editingIndex" :data="{...data,index:index}" :tableRowMap="tableRowMap" :headers="local_headers" />
               </tr>
             </template>
           </draggable>
