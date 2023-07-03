@@ -4,12 +4,9 @@ import p3 from '@/assets/images/pp-3.jpg';
 import p4 from '@/assets/images/pp-4.jpg';
 import p5 from '@/assets/images/pp-5.jpg';
 
-// const { app } = useRealm()
 export const useTableData = () => {
   const DUMMY_DATA = useState('tableDummyData');
-  const TABLE_DUMMY_DATA=useState('staleDummyData',()=>{
-    DUMMY_DATA.value
-  })
+  const TABLE_DUMMY_DATA = useState('staleData')
 
   //  SORTING
   const sortDataByField = (cb) => {
@@ -137,7 +134,7 @@ export const useTableData = () => {
   };
 
   const resetFilterFields = () => {
-    DUMMY_DATA.value = TABLE_DUMMY_DATA;
+    DUMMY_DATA.value = TABLE_DUMMY_DATA.value;
   };
 
 
@@ -225,5 +222,6 @@ export async function fetchCandidate(accessToken) {
       }`
     })
   })
-  useState('tableDummyData',()=>data.value.data.users)
+  useState('tableDummyData', () => data.value.data.users)
+  useState('staleData', () => data.value.data.users)
 }

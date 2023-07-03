@@ -12,5 +12,5 @@ const borderMap=new Map([
     ['Design Challange','border-t-orange-400'],
     ['Interview','border-t-violet-400']
 ])
-const { border, title, count } = defineProps(['border', 'title', 'count']);
+const {title, count } = defineProps([ 'title', 'count']);
 </script>

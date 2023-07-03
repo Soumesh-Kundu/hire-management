@@ -4,15 +4,18 @@ import draggable from 'vuedraggable';
 import { Drawer } from 'flowbite';
 import useGroup from '~/composables/grouping';
 
-const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap,setEditingIndex,editingIndex } = defineProps([
+const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap,setEditingId,editingId } = defineProps([
   'TABLE_DATA',
   'headers',
   'queryMap',
   'tableRowMap',
   'groupMap',
-  'setEditingIndex',
-  'editingIndex'
+  'setEditingId',
+  'editingId'
 ]);
+watchEffect(()=>{
+  console.log(TABLE_DATA)
+})
 const { grouped } = useGroup();
 const { tableTdVisible } = useHideDropDown();
 const draggable_local_headers = ref(headers.filter((item) => !item.primaryKey));
@@ -35,6 +38,7 @@ const byGrouped = computed(() => {
 
 //an universal grouping function whichs groups data depending on the queryString ,[ queryString ex. - 'team.team' , 'stages.state' . queryString is normally that string which we use to access the value in nested objects]
 function arrangeByProperty(data, queryString) {
+  console.log(data)
   const keys = queryString.split('.');
   return data.reduce((acc, user) => {
     let fieldValue = user;
@@ -73,7 +77,6 @@ function changeGroup(list, evt, queryString) {
 }
 </script>
 <template>
-  <SideDrawer />
   <div class="relative overflow-x-auto rounded-md">
     <table
       class="w-full text-sm text-left text-gray-500 border-collapse dark:text-gray-400"
@@ -188,7 +191,7 @@ function changeGroup(list, evt, queryString) {
       </thead>
       <tbody v-if="!grouped.active" class="candidate-tbody">
         <tr class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm" v-for="(data, index) in TABLE_DATA">
-          <CandidatesTableRow @check="setEditingIndex(index)" :editingIndex="editingIndex" :key="data._id" :data="{...data,index:index}" :tableRowMap="tableRowMap" :headers="local_headers" />
+          <CandidatesTableRow @check="setEditingId(data._id)" :editingId="editingId" :key="data._id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
         </tr>
       </tbody>
       <tbody v-else>
@@ -212,7 +215,7 @@ function changeGroup(list, evt, queryString) {
           >
             <template #item="{ element: data, index }">
               <tr class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm">
-                <CandidatesTableRow @check="setEditingIndex(index)" :key="data._id" :editingIndex="editingIndex" :data="{...data,index:index}" :tableRowMap="tableRowMap" :headers="local_headers" />
+                <CandidatesTableRow @check="setEditingId(data._id)" :key="data._id" :editingId="editingId" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
               </tr>
             </template>
           </draggable>

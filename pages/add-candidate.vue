@@ -33,7 +33,7 @@
                     <option value="Enter stage">None</option>
                     <option value="New Applied">New Applied</option>
                     <option value="Screening">Screening</option>
-                    <option value="Design Challenge">Design Challenge</option>
+                    <option value="Design Challange">Design Challenge</option>
                     <option value="Interview">Interview</option>
                 </select>
             </div>

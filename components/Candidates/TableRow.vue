@@ -1,11 +1,11 @@
 <script setup>
 import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid';
 
-const { data, headers, tableRowMap ,editingIndex} = defineProps([
+const { data, headers, tableRowMap ,editingId} = defineProps([
   'data',
   'headers',
   'tableRowMap',
-  'editingIndex'
+  'editingId'
 ]);
 const emit=defineEmits(['check'])
 const rowData = {
@@ -23,7 +23,7 @@ const { tableTdVisible } = useHideDropDown();
         @click="()=>{
          emit('check')
         }"
-        :checked="editingIndex===data.index"
+        :checked="editingId===data._id"
         class="w-5 h-5 text-green-400 bg-gray-100 border-gray-300 focus:ring-white focus:ring-0"
       />
       <label for="checkbox-table-search-1" class="sr-only">checkbox</label>

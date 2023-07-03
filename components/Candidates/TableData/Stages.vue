@@ -9,7 +9,7 @@
 
         <div v-if="content.value <= 6" class="flex items-center gap-1 mt-1">
             <div v-for="n in content.value" :key="n"
-                :class="`bg-${colorMap.get(content.state)} w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm`">
+                :class="`bg-${colorMap.get(content.state)} w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm ` ">
                 {{ n }}
             </div>
 

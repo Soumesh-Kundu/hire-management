@@ -24,7 +24,7 @@
       <h3 class="text-base font-medium capitalize">
         total candidates:
         <span class="p-1 ml-1 font-semibold text-white bg-green-700 rounded-sm">
-          {{ DUMMY_DATA.length }}</span>
+          {{ DUMMY_DATA?.length }}</span>
       </h3>
 
       <label id="tooltipBtn" class="relative inline-flex items-center cursor-pointer">
@@ -43,16 +43,17 @@
 
     <section v-if="!isKanbanNotVisible"
       class="grid grid-cols-4 gap-8 mx-6 mt-8 max-lg:grid-cols-2 max-lg:gap-y-12 max-md:grid-cols-1 max-md:mt-8">
-      <Candidates2Kanban :data="DUMMY_DATA" :detailsHandler="detailsHandler" />
+      <Candidates2Kanban :data="DUMMY_DATA" :key="DUMMY_DATA" :detailsHandler="detailsHandler" />
     </section>
-    <Candidates2Gallery v-else :data="DUMMY_DATA" />
+    <Candidates2Gallery v-else :data="DUMMY_DATA" :detailsHandler="detailsHandler" />
   </main>
 </template>
 
 <script setup>
-import { Drawer, Tooltip } from 'flowbite';
-const { DUMMY_DATA,resetFilterFields } = useTableData();
+import { Drawer, Tooltip } from 'flowbite'
 
+const { resetFilterFields } = useTableData();
+const DUMMY_DATA=useState('tableDummyData')
 const {  getCurrentCandInfo } = useCandidate();
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
@@ -94,6 +95,9 @@ onMounted(() => {
 
   const tooltip = new Tooltip($targetEl, $triggerEl, options);
 });
+watchEffect(()=>{
+  console.log(DUMMY_DATA.value)
+})
 onUnmounted(() => {
   drawer.value.hide();
   resetFilterFields()

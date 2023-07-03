@@ -24,7 +24,8 @@ onMounted(async ()=>{
   if(!app.currentUser){
     navigateTo('/login')
   }
-  
+  await app.currentUser.refreshAccessToken()
+  await fetchCandidate(app.currentUser.accessToken)
 })
 </script>
 

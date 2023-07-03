@@ -21,18 +21,19 @@ const DUMMY_DATA=useState('tableDummyData')
 const { getCurrentCandInfo } = useCandidate()
 const {setGroup}=useGroup()
 const drawer=ref()
-const editingIndex=ref(null)
-function setEditingIndex(index){
-  if(editingIndex.value!==index){
-    console.log(editingIndex.value)
-    editingIndex.value=index
-    console.log("different Index",editingIndex.value)
+const editingId=ref(null)
+
+
+function seteditingId(index){
+  if(editingId.value!==index){
+    editingId.value=index
+    console.log("different Index",editingId.value)
   }
   else{
-    editingIndex.value=null
-    console.log("smae Index" ,editingIndex.value)
+    editingId.value=null
+    console.log("smae Index" ,editingId.value)
   }
-  return editingIndex.value
+  return editingId.value
 }
 onMounted( async ()=>{
     const $drawerElement = document.querySelector('#drawer-right');
@@ -52,10 +53,6 @@ onMounted( async ()=>{
   if ($drawerElement) {
     drawer.value = new Drawer($drawerElement, drawerOptions);
   }
-
-  
-  await app.currentUser.refreshAccessToken()
-  await fetchCandidate(app.currentUser.accessToken)
 })
 onUnmounted(()=>{
   drawer.value.hide()
@@ -109,6 +106,7 @@ const tableRowMap = new Map([
 </script>
 
 <template>
+  <SideDrawer />
   <div class="flex flex-col h-full lg:h-[91.5vh] px-5 pt-5">
     <header class="mb-10 max-lg:mb-6 max-sm:mb-8">
       <div class="flex items-center justify-between max-xl:flex-col max-xl:items-start max-xl:gap-4 max-sm:flex-row">
@@ -131,7 +129,7 @@ const tableRowMap = new Map([
 
         <div class="flex items-center">
 
-          <div v-if="editingIndex!==null" class="flex items-center gap-3 pr-3 mr-3 border-r border-gray-400 max-md:border-none max-md:mr-0">
+          <div v-if="editingId!==null" class="flex items-center gap-3 pr-3 mr-3 border-r border-gray-400 max-md:border-none max-md:mr-0">
               <button
                 class="p-2 text-blue-500 bg-white border border-blue-500 rounded-md hover:bg-gray-100">
                 <PencilIcon class="w-6 h-6 font-semibold" />
@@ -160,7 +158,7 @@ const tableRowMap = new Map([
       </div>
     </header>
 
-    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :setEditingIndex="setEditingIndex" :queryMap="queryMap" :tableRowMap="tableRowMap" :groupMap="groupMap" :editingIndex="editingIndex" />
+    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :key="DUMMY_DATA" :headers="headers" :setEditingId="seteditingId" :queryMap="queryMap" :tableRowMap="tableRowMap" :groupMap="groupMap" :editingId="editingId" />
 
     <footer class="flex items-center justify-between py-3 mt-auto mb-2">
       <div class="flex items-center gap-4">
