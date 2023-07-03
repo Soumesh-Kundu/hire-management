@@ -9,7 +9,7 @@
 
         <div v-if="content.value <= 6" class="flex items-center gap-1 mt-1">
             <div v-for="n in content.value" :key="n"
-                :class="`${content.color} w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm`">
+                :class="`bg-${colorMap.get(content.state)} w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm`">
                 {{ n }}
             </div>
 
@@ -24,4 +24,10 @@
 <script setup>
 import {  ChevronDownIcon} from '@heroicons/vue/24/solid'
 const {content}=defineProps(['content'])
+const colorMap=new Map([
+    ['Screening','green-800'],
+    ['New Applied','emerald-400'],
+    ['Design Challange','orange-400'],
+    ['Interview','violet-400']
+])
 </script>

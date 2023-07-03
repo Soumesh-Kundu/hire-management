@@ -4,14 +4,15 @@ import draggable from 'vuedraggable';
 import { Drawer } from 'flowbite';
 import useGroup from '~/composables/grouping';
 
-const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap } = defineProps([
+const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap,setEditingIndex,editingIndex } = defineProps([
   'TABLE_DATA',
   'headers',
   'queryMap',
   'tableRowMap',
   'groupMap',
+  'setEditingIndex',
+  'editingIndex'
 ]);
-
 const { grouped } = useGroup();
 const { tableTdVisible } = useHideDropDown();
 const draggable_local_headers = ref(headers.filter((item) => !item.primaryKey));
@@ -186,16 +187,8 @@ function changeGroup(list, evt, queryString) {
         </tr>
       </thead>
       <tbody v-if="!grouped.active" class="candidate-tbody">
-        <tr
-          class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm"
-          v-for="(data, index) in TABLE_DATA"
-        >
-          <CandidatesTableRow
-            :key="data.id"
-            :data="data"
-            :tableRowMap="tableRowMap"
-            :headers="local_headers"
-          />
+        <tr class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm" v-for="(data, index) in TABLE_DATA">
+          <CandidatesTableRow @check="setEditingIndex(index)" :editingIndex="editingIndex" :key="data._id" :data="{...data,index:index}" :tableRowMap="tableRowMap" :headers="local_headers" />
         </tr>
       </tbody>
       <tbody v-else>
@@ -218,15 +211,8 @@ function changeGroup(list, evt, queryString) {
             "
           >
             <template #item="{ element: data, index }">
-              <tr
-                class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm"
-              >
-                <CandidatesTableRow
-                  :key="data.id"
-                  :data="data"
-                  :tableRowMap="tableRowMap"
-                  :headers="local_headers"
-                />
+              <tr class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm">
+                <CandidatesTableRow @check="setEditingIndex(index)" :key="data._id" :editingIndex="editingIndex" :data="{...data,index:index}" :tableRowMap="tableRowMap" :headers="local_headers" />
               </tr>
             </template>
           </draggable>

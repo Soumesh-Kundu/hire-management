@@ -1,7 +1,7 @@
 <script setup>
 import { Tabs, initTabs } from 'flowbite';
 import { useCandidate } from '~/composables/candidate.js';
-
+import defaultImg from '~/assets/images/default.jpg'
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -17,7 +17,12 @@ import {
 
 const { data } = defineProps(['data']);
 const { currCandidate } = useCandidate();
-
+const colorMap=new Map([
+    ['Screening','green-800'],
+    ['New Applied','emerald-400'],
+    ['Design Challange','orange-400'],
+    ['Interview','violet-400']
+])
 onMounted(() => {
   initTabs();
 });
@@ -36,7 +41,7 @@ onMounted(() => {
           <div class="relative">
             <img
               class="rounded-full w-14 h-14"
-              :src="currCandidate?.candidate?.image"
+              :src="currCandidate?.candidate?.image ?? defaultImg"
               alt=""
             />
 
@@ -61,7 +66,7 @@ onMounted(() => {
           <div>
             <div class="flex items-center gap-2">
               <h3 class="text-lg font-medium max-xl:text-base">
-                {{ currCandidate?.candidate?.name }}
+                {{ currCandidate?.name }}
               </h3>
               <span
                 class="px-2 text-sm text-green-600 bg-green-100 border border-green-400 rounded-md max-xl:text-xs"
@@ -74,15 +79,15 @@ onMounted(() => {
             </p>
             <div class="flex items-center gap-1">
               <div
-                v-for="n in currCandidate?.stages?.value"
+                v-for="n in currCandidate?.stage?.value"
                 :key="n"
-                :class="`${currCandidate?.stages?.color}  w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs`"
+                :class="`bg-${colorMap.get(currCandidate.stage.state)}  w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs`"
               >
                 {{ n }}
               </div>
               <div
-                v-if="currCandidate?.stages"
-                v-for="n in 6 - currCandidate.stages?.value"
+                v-if="currCandidate?.stage"
+                v-for="n in 6 - currCandidate.stage?.value"
                 :key="n"
                 class="flex items-center justify-center text-sm font-medium text-white bg-gray-400 rounded-sm w-7 max-lg:w-6 max-lg:text-xs"
               >

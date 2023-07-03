@@ -52,9 +52,8 @@
 <script setup>
 import { Drawer, Tooltip } from 'flowbite';
 const { DUMMY_DATA,resetFilterFields } = useTableData();
-const { candidateData } = useCandidateData();
 
-const { currCandidate, getCurrentCandInfo } = useCandidate();
+const {  getCurrentCandInfo } = useCandidate();
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
   drawer.value.show();

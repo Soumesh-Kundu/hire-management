@@ -7,9 +7,10 @@
 
 <script setup>
 function getDateFormat(date) {
+  const newDate=new Date(date)
   const month =
-    date.getMonth() < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
-  const format = `${date.getDate()}/${month}/${date.getFullYear()}`;
+    newDate.getMonth() < 10 ? `0${newDate.getMonth() + 1}` : `${newDate.getMonth() + 1}`;
+  const format = `${newDate.getDate()}/${month}/${newDate.getFullYear()}`;
   return format;
 };
 const {content}=defineProps(['content'])
