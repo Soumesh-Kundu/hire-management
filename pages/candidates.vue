@@ -130,10 +130,12 @@ const tableRowMap = new Map([
         <div class="flex items-center">
 
           <div v-if="editingId!==null" class="flex items-center gap-3 pr-3 mr-3 border-r border-gray-400 max-md:border-none max-md:mr-0">
+            <!-- editing -->
               <button
                 class="p-2 text-blue-500 bg-white border border-blue-500 rounded-md hover:bg-gray-100">
                 <PencilIcon class="w-6 h-6 font-semibold" />
               </button>
+              <!-- deleting -->
               <button
                 class="p-2 text-red-500 bg-white border border-red-500 rounded-md hover:bg-gray-100">
                 <TrashIcon class="w-6 h-6 font-semibold" />

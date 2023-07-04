@@ -61,7 +61,9 @@ onMounted(()=>{
     <div :id="`editDropdownMenu${index}`"
       class="z-10 hidden !-ml-1.5 bg-white divide-y divide-gray-100 rounded-md shadow dark:bg-gray-700 dark:divide-gray-600">
       <ul class="flex flex-col items-start gap-2 px-3 py-2 space-y-1 text-sm text-gray-700 dark:text-gray-200" :aria-labelledby="`hideDropdownBtn${index}`">
+        <!-- editing -->
         <li class="flex items-center justify-start gap-1.5 cursor-pointer"><PencilIcon class="w-5 h-5 text-blue-500" /> Edit </li>
+        <!-- deleting -->
         <li class="flex items-center justify-start gap-1.5 cursor-pointer" ><TrashIcon class="w-5 h-5 text-red-500" /> Delete</li>
       </ul>
     </div>
