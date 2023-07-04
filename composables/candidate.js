@@ -193,7 +193,7 @@ export const useHideDropDown = () => {
 };
 
 export async function fetchCandidate(accessToken) {
-  const { data } = await useFetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${useRuntimeConfig().public.appId}/graphql`, {
+  const res = await fetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${useRuntimeConfig().public.appId}/graphql`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`
@@ -222,6 +222,10 @@ export async function fetchCandidate(accessToken) {
       }`
     })
   })
-  useState('tableDummyData', () => data.value.data.users)
-  useState('staleData', () => data.value.data.users)
+  const data=await res.json()
+  console.log(data)
+  const DUMMY_DATA=useState('tableDummyData')
+  const TABLE_DUMMY_DATA=useState('staleData')
+  DUMMY_DATA.value=data.data.users
+  TABLE_DUMMY_DATA.value=data.data.users
 }

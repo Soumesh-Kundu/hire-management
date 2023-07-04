@@ -1,6 +1,10 @@
 <script setup>
 import draggable from 'vuedraggable';
+import {ObjectId} from 'bson'
 
+
+const {mongo}=useRealm()
+const userCollection=mongo?.db('hire-management')?.collection('users')
 const { data, detailsHandler } = defineProps(['data', 'detailsHandler']);
 
 const byGrouped = computed(() => {
@@ -24,7 +28,7 @@ function arrangeByStages(data, queryString) {
   }, {});
 }
 
-function changeGroup(list, evt, key) {
+async function changeGroup(list, evt, key) {
   if (evt.added !== undefined) {
     let currentElement = list[evt.added.newIndex];
     let nextElement = list[(evt.added.newIndex + 1) % list.length];
@@ -32,6 +36,7 @@ function changeGroup(list, evt, key) {
       ...nextElement[key],
       value: currentElement[key].value,
     };
+    await userCollection.updateOne({_id:ObjectId(currentElement._id)},{$set:{stage:currentElement.stage}})
   }
 }
 </script>

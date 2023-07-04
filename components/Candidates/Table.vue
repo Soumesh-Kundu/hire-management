@@ -1,9 +1,11 @@
 <script setup>
 import { ChevronUpDownIcon } from '@heroicons/vue/24/solid';
 import draggable from 'vuedraggable';
-import { Drawer } from 'flowbite';
 import useGroup from '~/composables/grouping';
+import {ObjectID} from 'bson'
 
+const {mongo}=useRealm()
+const userCollection=mongo?.db('hire-management')?.collection('users')
 const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap,setEditingId,editingId } = defineProps([
   'TABLE_DATA',
   'headers',
@@ -13,9 +15,6 @@ const { TABLE_DATA, headers, queryMap, tableRowMap, groupMap,setEditingId,editin
   'setEditingId',
   'editingId'
 ]);
-watchEffect(()=>{
-  console.log(TABLE_DATA)
-})
 const { grouped } = useGroup();
 const { tableTdVisible } = useHideDropDown();
 const draggable_local_headers = ref(headers.filter((item) => !item.primaryKey));
@@ -38,7 +37,6 @@ const byGrouped = computed(() => {
 
 //an universal grouping function whichs groups data depending on the queryString ,[ queryString ex. - 'team.team' , 'stages.state' . queryString is normally that string which we use to access the value in nested objects]
 function arrangeByProperty(data, queryString) {
-  console.log(data)
   const keys = queryString.split('.');
   return data.reduce((acc, user) => {
     let fieldValue = user;
@@ -56,7 +54,7 @@ function arrangeByProperty(data, queryString) {
 }
 
 //this change group function which takes the queryString which is coming from groupMap and change the grouping property with as same as its sibling elements
-function changeGroup(list, evt, queryString) {
+async function changeGroup(list, evt, queryString) {
   if (evt.added !== undefined) {
     const keys = queryString.split('.');
     const lastKey = keys.at(-1);
@@ -73,6 +71,9 @@ function changeGroup(list, evt, queryString) {
       }
     }
     currentElement[lastKey] = nextElement[lastKey];
+    const element=list[evt.added.newIndex]
+    const updatedKey=keys[0]
+    await userCollection.updateOne({_id:ObjectID(element._id)},{$set:{[updatedKey]:element[updatedKey]}})
   }
 }
 </script>
@@ -191,7 +192,7 @@ function changeGroup(list, evt, queryString) {
       </thead>
       <tbody v-if="!grouped.active" class="candidate-tbody">
         <tr class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm" v-for="(data, index) in TABLE_DATA">
-          <CandidatesTableRow @check="setEditingId(data._id)" :editingId="editingId" :key="data._id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
+          <CandidatesTableRow @check="setEditingId(data._id)" :editingId="editingId" :index="index" :key="data._id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
         </tr>
       </tbody>
       <tbody v-else>
@@ -215,7 +216,7 @@ function changeGroup(list, evt, queryString) {
           >
             <template #item="{ element: data, index }">
               <tr class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm">
-                <CandidatesTableRow @check="setEditingId(data._id)" :key="data._id" :editingId="editingId" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
+                <CandidatesTableRow @check="setEditingId(data._id)" :key="data._id"  :index="index" :editingId="editingId" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
               </tr>
             </template>
           </draggable>
