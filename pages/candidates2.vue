@@ -95,9 +95,6 @@ onMounted(() => {
 
   const tooltip = new Tooltip($targetEl, $triggerEl, options);
 });
-watchEffect(()=>{
-  console.log(DUMMY_DATA.value)
-})
 onUnmounted(() => {
   drawer.value.hide();
   resetFilterFields()

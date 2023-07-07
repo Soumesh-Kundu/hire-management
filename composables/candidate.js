@@ -223,7 +223,6 @@ export async function fetchCandidate(accessToken) {
     })
   })
   const data=await res.json()
-  console.log(data)
   const DUMMY_DATA=useState('tableDummyData')
   const TABLE_DUMMY_DATA=useState('staleData')
   DUMMY_DATA.value=data.data.users
